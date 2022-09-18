@@ -46,6 +46,7 @@ def user_login():
     p = Person(phone,password)
     status=p.login()
     type = status['type']
+    global person
     person = make_user(phone,password,type)
     return status
     

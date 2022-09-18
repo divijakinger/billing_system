@@ -174,9 +174,9 @@ def create_worker():
     data = request.json
     fn = data['firstname']
     ln = data['lastname']
-    phone = data['phone']
-    store = data['store']
-    type = data['type']
+    phone = int(data['phone'])
+    store = int(data['store_id'])
+    type = int(data['type'])
     valid = a.create_new_worker(fn,ln,phone,store,type)
     return valid
 

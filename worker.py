@@ -57,10 +57,12 @@ class Admin(Worker):
   def create_new_worker(self,firstname,lastname,phone,store_id,type):
     generated_pass = self.generate_pass(firstname);
     print(generated_pass)
-    insert_query = f"INSERT INTO USERS(user_type,phone,lastname,firstname,pass) VALUES ({type},{phone},'{lastname}','{firstname},'{generated_pass}');"
+    insert_query = f"INSERT INTO USERS(user_type,phone,lastname,firstname,pass) VALUES ({type},{phone},'{lastname}','{firstname}','{generated_pass}');"
+    print(insert_query);
     if (execute_insert_query(insert_query)):
       w = Worker(phone,generated_pass)
       worker_query = f"INSERT INTO WORKERS(WORKER_ID,WORKER_TYPE,STORE_ID) VALUES ({w.id},{type},{store_id});"
+      print(worker_query)
       if (execute_insert_query(worker_query)):
         return {'status':'SUCCESS'}
       else:

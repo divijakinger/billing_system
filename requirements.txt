@@ -4,3 +4,4 @@ flask_sqlalchemy
 datetime
 gunicorn
 requests
+psycopg2

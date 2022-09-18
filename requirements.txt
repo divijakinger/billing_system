@@ -1,5 +1,4 @@
 flask
-json
 sqlalchemy
 flask_sqlalchemy
 datetime

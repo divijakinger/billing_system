@@ -7,7 +7,7 @@ from connections import *
 from people import *
 
 type = 100
-def make_user(phone,password):
+def make_user(phone,password,type):
     if (type==0):
         global c
         c = Cashier(phone,password)
@@ -45,9 +45,8 @@ def user_login():
     password=data['password']
     p = Person(phone,password)
     status=p.login()
-    global type
     type = status['type']
-    person = make_user(phone,password)
+    person = make_user(phone,password,type)
     return status
     
 @app.route('/resetPassword',methods=['POST'])

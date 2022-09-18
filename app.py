@@ -6,14 +6,13 @@ from worker import *
 from connections import *
 from people import *
 
-global c
 type = 100
-w = None
-p = None
-c = None
-cust = None
-m = None
-a = None
+# w = None
+# p = None
+# c = None
+# cust = None
+# m = None
+# a = None
 
 @app.route('/',methods=['GET'])
 def home():

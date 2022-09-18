@@ -46,7 +46,9 @@ Here we have four views we are catering to :
 
 ER DIAGRAM - 
 ![alt text](https://github.com/divijakinger/billing_system/blob/main/er_billing_system.png)
+
 LINK TO DESIGN FILES
+https://github.com/divijakinger/billing_system/tree/main/designs
 
 *INSTRUCTIONS*
 Download billing_system.apk

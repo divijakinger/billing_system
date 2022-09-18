@@ -6,13 +6,6 @@ from connections import *
 from people import *
 
 type = 100
-w = None
-p = None
-c = None
-cust = None
-m = None
-a = None
-
 phone = 0
 password = ''
 

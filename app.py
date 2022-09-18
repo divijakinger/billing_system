@@ -174,5 +174,4 @@ def create_worker():
     valid = a.create_new_worker(fn,ln,phone,store,type)
     return valid
 
-if "__name__" == "__main__":
-    app.run()
+

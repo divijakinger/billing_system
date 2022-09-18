@@ -43,7 +43,9 @@ Here we have four views we are catering to :
 - View Details : View details such as name,branch,id of the logged in admin
 
 *FILES*
+
 LINK TO ER DIAGRAM - 
+![alt text](https://github.com/divijakinger/billing_system/blob/main/er_billing_system.png)
 LINK TO DESIGN FILES
 
 *INSTRUCTIONS*

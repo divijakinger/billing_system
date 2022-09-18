@@ -1,6 +1,7 @@
 BILLING SYSTEM
 
 *INTRODUCTION*
+
 Our main idea with this system is to provide a seamless shopping experience, for both the customer and the shop owner as well. 
 Here we have aimed to create a system that provides access for stores all accross the country
 Here we have four views we are catering to :

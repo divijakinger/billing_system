@@ -1,3 +1,4 @@
+from glob import glob
 import json
 from flask import jsonify
 from flask import Flask,request
@@ -5,6 +6,7 @@ from worker import *
 from connections import *
 from people import *
 
+global c
 type = 100
 w = None
 p = None
@@ -87,7 +89,6 @@ def customer_orders():
 @app.route('/getCashierOrders',methods=['GET'])
 def cashier_orders():
     data = c.get_todays_order()
-    print(data)
     return (data)
 
 @app.route('/getAllProducts',methods=['GET'])

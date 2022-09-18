@@ -19,10 +19,6 @@ Here we have four views we are catering to :
 - View Details : View details such as name,branch,id of the logged in manager
 - Password : Manager can further reset password or change password
 
-![alt text](https://github.com/divijakinger/billing_system/blob/main/designs/manager/Android%20Small%20-%204.png)
-![alt text](https://github.com/divijakinger/billing_system/blob/main/designs/manager/Android%20Small%20-%205.png)
-![alt text](https://github.com/divijakinger/billing_system/blob/main/designs/manager/Android%20Small%20-%206.png)
-
 2) CASHIER
 
 - View Todays Orders : View All Orders that have been placed today

@@ -23,6 +23,7 @@ def user_login():
     password=data['password']
     p = Person(phone,password)
     status=p.login()
+    type = status['type']
     return status
 
 @app.route('/resetPassword',methods=['POST'])

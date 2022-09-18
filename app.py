@@ -1,4 +1,3 @@
-from glob import glob
 import json
 from flask import jsonify
 from flask import Flask,request
@@ -7,29 +6,12 @@ from connections import *
 from people import *
 
 type = 100
-def make_user(phone,password,type):
-    if (type==0):
-        global c
-        c = Cashier(phone,password)
-        type=0
-        return c
-    elif (type==1):
-        global m
-        m = Manager(phone,password)
-        type=1
-        return m
-    elif (type==2):
-        global a
-        a = Admin(phone,password)
-        type=2
-        return a
-    elif (type==3):
-        global cust
-        cust = Customer(phone,password)
-        type=3
-        return c
-
-
+w = None
+p = None
+c = None
+cust = None
+m = None
+a = None
 
 @app.route('/',methods=['GET'])
 def home():
@@ -45,56 +27,72 @@ def user_login():
     password=data['password']
     p = Person(phone,password)
     status=p.login()
-    type = status['type']
-    global person
-    person = make_user(phone,password,type)
+    if (status['status']=='FAIL'):
+        return status
+    elif (status['type']==0):
+        global c
+        c = Cashier(phone,password)
+        type=0
+    elif (status['type']==1):
+        global m
+        m = Manager(phone,password)
+        type=1
+    elif (status['type']==2):
+        global a
+        a = Admin(phone,password)
+        type=2
+    elif (status['type']==3):
+        global cust
+        cust = Customer(phone,password)
+        type=3
     return status
-    
+
 @app.route('/resetPassword',methods=['POST'])
 def resetPass():
     data = request.json
     old = data['old_password']
     new = data['new_password']
-    valid = person.change_password(old,new)
+    valid = p.change_password(old,new)
     return valid
 
 @app.route('/getDetails',methods=['GET'])
 def dets():
     data=None
     if (type==0):
-        data=person.get_details()
+        data=c.get_details()
     if (type==1):
-        data=person.get_details()
+        data=m.get_details()
     if (type==2):
-        data=person.admin_get_details()
+        data=a.admin_get_details()
     if (type==3):
-        data=person.get_details()
+        data=cust.get_details()
     return data
         
 @app.route('/orderAnalytics',methods=['GET'])
 def analytics():
-    data=person.view_analytics()
+    data=m.view_analytics()
     return data
 
 @app.route('/getAllOrders',methods=['GET'])
 def orders():
-    data=person.view_order()
+    data=m.view_order()
     return data
 
 @app.route('/getCustomerOrders',methods=['GET'])
 def customer_orders():
-    data = person.getOrders()
+    data = cust.getOrders()
     print(data)
     return (data)
 
 @app.route('/getCashierOrders',methods=['GET'])
 def cashier_orders():
-    data = person.get_todays_order()
+    data = c.get_todays_order()
+    print(data)
     return (data)
 
 @app.route('/getAllProducts',methods=['GET'])
 def get_all_products():
-    data = person.get_all_products()
+    data = c.get_all_products()
     return jsonify(data)
 
 @app.route('/checkCoupon',methods=['POST'])
@@ -102,7 +100,7 @@ def checkValidCoupon():
     data=request.json
     print(data)
     coupon_name = data['coupon']
-    validity = person.check_coupon(coupon_name)
+    validity = c.check_coupon(coupon_name)
     return validity
 
 @app.route('/checkCustomer',methods=['POST'])
@@ -110,7 +108,7 @@ def checkValidCustomer():
     data=request.json
     print(data)
     cust_phone = data['phone']
-    validity = person.check_customer(cust_phone)
+    validity = c.check_customer(cust_phone)
     return validity
 
 @app.route('/regCustomer',methods=['POST'])
@@ -120,7 +118,7 @@ def register_customer():
     last_name = data['lastname']
     phone = int(data['phone'])
     email = data['email']
-    validity = person.reg(first_name,last_name,email,phone)
+    validity = c.reg(first_name,last_name,email,phone)
     return validity
 
 @app.route('/createOrder',methods=['POST'])
@@ -136,7 +134,7 @@ def create_new_order():
     card_no = data['cardnumber']
     expiry = data['cardexpiry']
     cvv = data['cardcvv']
-    validity = person.create_order(amount,products,coupon_id,cust_id,payment_type,senders_upi,card_no,expiry,cvv)
+    validity = c.create_order(amount,products,coupon_id,cust_id,payment_type,senders_upi,card_no,expiry,cvv)
     print(validity)
     return validity
 
@@ -146,7 +144,7 @@ def add_new_coupon():
     coup_name = data['coupon_name']
     disc = data['discount']
     expiry = data['date']
-    validity = person.add_coupon(coup_name,disc,expiry)
+    validity = a.add_coupon(coup_name,disc,expiry)
     return validity
 
 @app.route('/addProduct',methods=['POST'])
@@ -157,12 +155,12 @@ def add_new_product():
     prod_qty = data['qty']
     prod_cat = data['category']
     prod_war = data['warranty']
-    validity = person.add_product(prod_name,prod_price,prod_qty,prod_cat,prod_war)
+    validity = a.add_product(prod_name,prod_price,prod_qty,prod_cat,prod_war)
     return validity
 
 @app.route('/getAllStores',methods=['GET'])
 def get_all_stores():
-    data = person.get_all_stores()
+    data = a.get_all_stores()
     return data
 
 @app.route('/createWorker',methods=['POST'])
@@ -173,7 +171,7 @@ def create_worker():
     phone = int(data['phone'])
     store = int(data['store_id'])
     type = int(data['type'])
-    valid = person.create_new_worker(fn,ln,phone,store,type)
+    valid = a.create_new_worker(fn,ln,phone,store,type)
     return valid
 
 

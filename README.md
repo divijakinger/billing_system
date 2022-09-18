@@ -44,7 +44,7 @@ Here we have four views we are catering to :
 
 *FILES*
 
-LINK TO ER DIAGRAM - 
+ER DIAGRAM - 
 ![alt text](https://github.com/divijakinger/billing_system/blob/main/er_billing_system.png)
 LINK TO DESIGN FILES
 

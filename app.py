@@ -1,15 +1,9 @@
 import json
-from turtle import st
 from flask import jsonify
 from flask import Flask,request
 from worker import *
 from connections import *
 from people import *
-from flask_ngrok import run_with_ngrok
-from flask_cors import CORS
-
-CORS(app)
-run_with_ngrok(app)
 
 type = 100
 w = None
@@ -181,4 +175,4 @@ def create_worker():
     return valid
 
 if "__name__" == "__main__":
-    app.run(port=5000)
+    app.run()

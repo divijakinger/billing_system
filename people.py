@@ -1,5 +1,4 @@
 from datetime import date, timedelta
-from email.policy import default
 from connections import *
 import json
 

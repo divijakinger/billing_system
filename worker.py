@@ -1,8 +1,6 @@
-import re
 from people import *
 from payment import *
 from connections import *
-from datetime import datetime
 
 class Worker(Person):
   def generate_pass(self,name):

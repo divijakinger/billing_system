@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from connections import *
+from classes.connections import *
 import json
 
 class Person():

@@ -1,6 +1,6 @@
-from people import *
-from payment import *
-from connections import *
+from classes.people import *
+from classes.payment import *
+from classes.connections import *
 
 class Worker(Person):
   def generate_pass(self,name):

@@ -1,9 +1,9 @@
 import json
 from flask import jsonify
 from flask import Flask,request
-from worker import *
-from connections import *
-from people import *
+from classes.worker import *
+from classes.connections import *
+from classes.people import *
 
 type = 100
 w = None

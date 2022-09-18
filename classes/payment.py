@@ -1,4 +1,4 @@
-from connections import *
+from classes.connections import *
 
 class Payment():
   def __init__(self,payment_id):

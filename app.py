@@ -5,13 +5,9 @@ from classes.worker import *
 from classes.connections import *
 from classes.people import *
 
-type = 100
-w = None
-p = None
-c = None
-cust = None
-m = None
-a = None
+d={}
+
+app.secret_key='testing'
 
 @app.route('/',methods=['GET'])
 def home():
@@ -20,31 +16,34 @@ def home():
 
 @app.route('/login',methods=['POST'])
 def user_login():
-    global type
-    global p
     data=request.json
     phone=data['phone']
     password=data['password']
     p = Person(phone,password)
+    d['person']=p
     status=p.login()
     if (status['status']=='FAIL'):
         return status
     elif (status['type']==0):
-        global c
         c = Cashier(phone,password)
+        d['cashier']=c
         type=0
+        d['type']=type
     elif (status['type']==1):
-        global m
         m = Manager(phone,password)
+        d['manager']=m
         type=1
+        d['type']=type
     elif (status['type']==2):
-        global a
         a = Admin(phone,password)
+        d['admin']=a
         type=2
+        d['type']=type
     elif (status['type']==3):
-        global cust
         cust = Customer(phone,password)
+        d['customer']=cust
         type=3
+        d['type']=type
     return status
 
 @app.route('/resetPassword',methods=['POST'])
@@ -52,6 +51,7 @@ def resetPass():
     data = request.json
     old = data['old_password']
     new = data['new_password']
+    p=d['person']
     valid = p.change_password(old,new)
     return valid
 
@@ -59,39 +59,48 @@ def resetPass():
 def dets():
     data=None
     if (type==0):
+        c=d['cashier']
         data=c.get_details()
     if (type==1):
+        m=d['manager']
         data=m.get_details()
     if (type==2):
+        a=d['admin']
         data=a.admin_get_details()
     if (type==3):
+        cust=d['customer']
         data=cust.get_details()
     return data
         
 @app.route('/orderAnalytics',methods=['GET'])
 def analytics():
+    m=d['manager']
     data=m.view_analytics()
     return data
 
 @app.route('/getAllOrders',methods=['GET'])
 def orders():
+    m=d['manager']
     data=m.view_order()
     return data
 
 @app.route('/getCustomerOrders',methods=['GET'])
 def customer_orders():
+    cust=d['customer']
     data = cust.getOrders()
     print(data)
     return (data)
 
 @app.route('/getCashierOrders',methods=['GET'])
 def cashier_orders():
+    c=d['cashier']
     data = c.get_todays_order()
     print(data)
     return (data)
 
 @app.route('/getAllProducts',methods=['GET'])
 def get_all_products():
+    c=d['cashier']
     data = c.get_all_products()
     return jsonify(data)
 
@@ -100,6 +109,7 @@ def checkValidCoupon():
     data=request.json
     print(data)
     coupon_name = data['coupon']
+    c=d['cashier']
     validity = c.check_coupon(coupon_name)
     return validity
 
@@ -108,6 +118,7 @@ def checkValidCustomer():
     data=request.json
     print(data)
     cust_phone = data['phone']
+    c=d['cashier']
     validity = c.check_customer(cust_phone)
     return validity
 
@@ -118,6 +129,7 @@ def register_customer():
     last_name = data['lastname']
     phone = int(data['phone'])
     email = data['email']
+    c=d['cashier']
     validity = c.reg(first_name,last_name,email,phone)
     return validity
 
@@ -134,6 +146,7 @@ def create_new_order():
     card_no = data['cardnumber']
     expiry = data['cardexpiry']
     cvv = data['cardcvv']
+    c=d['cashier']
     validity = c.create_order(amount,products,coupon_id,cust_id,payment_type,senders_upi,card_no,expiry,cvv)
     print(validity)
     return validity
@@ -144,6 +157,7 @@ def add_new_coupon():
     coup_name = data['coupon_name']
     disc = data['discount']
     expiry = data['date']
+    a=d['admin']
     validity = a.add_coupon(coup_name,disc,expiry)
     return validity
 
@@ -155,11 +169,13 @@ def add_new_product():
     prod_qty = data['qty']
     prod_cat = data['category']
     prod_war = data['warranty']
+    a=d['admin']
     validity = a.add_product(prod_name,prod_price,prod_qty,prod_cat,prod_war)
     return validity
 
 @app.route('/getAllStores',methods=['GET'])
 def get_all_stores():
+    a=d['admin']
     data = a.get_all_stores()
     return data
 
@@ -171,6 +187,7 @@ def create_worker():
     phone = int(data['phone'])
     store = int(data['store_id'])
     type = int(data['type'])
+    a=d['admin']
     valid = a.create_new_worker(fn,ln,phone,store,type)
     return valid
 

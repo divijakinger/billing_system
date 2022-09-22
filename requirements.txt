@@ -5,3 +5,4 @@ datetime
 gunicorn
 requests
 psycopg2
+flask-session

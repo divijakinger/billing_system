@@ -7,11 +7,9 @@ from classes.people import *
 from flask_session import Session
 from flask_cors import CORS, cross_origin
 
-SECRET_KEY = "testing"
-SESSION_TYPE = 'filesystem'
-app.config.from_object(__name__)
+app.config["SESSION_PERMANENT"] = True
+app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-CORS(app)
 
 @app.route('/',methods=['GET'])
 @cross_origin(supports_credentials=True)
@@ -27,6 +25,7 @@ def user_login():
     password=data['password']
     session['phone']=phone
     session['password']=password
+    print(session['phone'])
     p = Person(phone,password)
     status=p.login()
     if (status['status']=='FAIL'):

@@ -9,6 +9,7 @@ from flask_cors import CORS, cross_origin
 
 SECRET_KEY = "testing"
 SESSION_TYPE = 'filesystem'
+app.config.from_object(__name__)
 Session(app)
 CORS(app)
 

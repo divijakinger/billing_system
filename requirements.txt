@@ -6,3 +6,4 @@ gunicorn
 requests
 psycopg2
 flask-session
+flask_cors

@@ -7,7 +7,8 @@ from classes.people import *
 from flask_session import Session
 from flask_cors import CORS, cross_origin
 
-app.secret_key='testing'
+SECRET_KEY = "testing"
+SESSION_TYPE = 'filesystem'
 Session(app)
 CORS(app)
 

@@ -10,6 +10,7 @@ from flask_cors import CORS, cross_origin
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+CORS(app)
 
 @app.route('/',methods=['GET'])
 @cross_origin(supports_credentials=True)

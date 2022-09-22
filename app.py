@@ -47,6 +47,7 @@ def user_login():
         cust = Customer(phone,password)
         type=3
         session['type']=type
+    print(session)
     return status
 
 @app.route('/resetPassword',methods=['POST'])

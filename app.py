@@ -58,6 +58,7 @@ def resetPass():
 
 @app.route('/getDetails',methods=['GET'])
 def dets():
+    print(session)
     data=None
     phone=session['phone']
     dummy = Person(phone)

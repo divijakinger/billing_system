@@ -110,20 +110,20 @@ class Cashier(Worker):
     users_query = f"Insert into USERS(user_type,phone,lastname,firstname,pass) VALUES (3,{phone},'{lastname}','{firstname}','{generated_pass}');"
     print(users_query)
     if (execute_insert_query(users_query)):
-      cust = Customer(phone,generated_pass);
-      customer_query = f"INSERT INTO CUSTOMERS(CUST_ID,EMAIL,LOYALTY_PTS) VALUES ({cust.id},'{email}',0);"
+      find_id = execute_select_query(f"SELECT UDER_ID from USERS WHERE PHONE={phone}")[0][0]
+      customer_query = f"INSERT INTO CUSTOMERS(CUST_ID,EMAIL,LOYALTY_PTS) VALUES ({find_id},'{email}',0);"
       print(customer_query)
       if (execute_insert_query(customer_query)):
-        return {'status':'SUCCESS','user_id':cust.id}
+        return {'status':'SUCCESS','user_id':find_id}
       else :
-        execute_insert_query(f"DELETE FROM USERS WHERE USER_ID={cust.id}")
+        execute_insert_query(f"DELETE FROM USERS WHERE USER_ID={find_id}")
     return {'status':'FAIL'}
     
   def check_customer(self,phone_no):
     customer_query = f"SELECT USER_ID,FIRSTNAME,LASTNAME,EMAIL,LOYALTY_PTS FROM USERS,CUSTOMERS where USERS.USER_ID = CUSTOMERS.CUST_ID and PHONE={phone_no}"
     customer_details = execute_select_query(customer_query)
     if (len(customer_details)==0):
-      return {'status':'FALL'}
+      return {'status':'FAIL'}
     return {'status':'SUCCESS','data':[customer_details[0][0],customer_details[0][1],customer_details[0][2],customer_details[0][3],customer_details[0][4]]}
   
   def generate_invoice(order_id):

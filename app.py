@@ -15,7 +15,7 @@ def home():
 
 @app.route('/login',methods=['POST'])
 def user_login():
-    execute_select_query("TRUNCATE TABLE SESSIONS;")
+    db.engine.execute("TRUNCATE TABLE SESSIONS;")
     data=request.json
     phone=data['phone']
     execute_insert_query(f"INSERT INTO SESSIONS() VALUES {phone}")

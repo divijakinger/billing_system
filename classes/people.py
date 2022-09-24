@@ -5,7 +5,8 @@ import json
 class Person():
   def __init__(self):
     phone_query = "SELECT PHONE FROM SESSIONS;"
-    phone_result = execute_select_query(phone_query);
+    phone_result = execute_select_query(phone_query)
+    print(phone_result)
     phone = phone_result[0][0]
     self.phone = phone
     id_query = f"SELECT USER_ID,USER_TYPE from USERS WHERE PHONE={(phone)};"

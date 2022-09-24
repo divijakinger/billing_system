@@ -1,20 +1,12 @@
 import json
 from flask import jsonify
-from flask import Flask,request,session
+from flask import Flask,request
 from classes.worker import *
 from classes.connections import *
 from classes.people import *
-from flask_session import Session
-from flask_cors import CORS, cross_origin
-import os
 
-app.config['SECRET_KEY'] = 'testing'
-app.config['SESSION_COOKIE_NAME'] = "my_session"
-app.config["SESSION_PERMANENT"] = True
-app.config["SESSION_TYPE"] = "filesystem"
-app.secret_key = 'testing'
-Session(app)
-CORS(app)
+
+
 
 @app.route('/',methods=['GET'])
 def home():
@@ -23,28 +15,27 @@ def home():
 
 @app.route('/login',methods=['POST'])
 def user_login():
+    execute_select_query("TRUNCATE TABLE SESSIONS;")
     data=request.json
     phone=data['phone']
+    execute_insert_query(f"INSERT INTO SESSIONS() VALUES {phone}")
     password=data['password']
-    session["phone"]=phone
-    p = Person(phone)
+    p = Person()
     status=p.login(password)
     if (status['status']=='FAIL'):
         return status
     elif (status['type']==0):
-        c = Cashier(phone)
+        c = Cashier()
         type=0
     elif (status['type']==1):
-        m = Manager(phone)
+        m = Manager()
         type=1
     elif (status['type']==2):
-        a = Admin(phone)
+        a = Admin()
         type=2
     elif (status['type']==3):
-        cust = Customer(phone)
+        cust = Customer()
         type=3
-    session["type"]=type
-    print(session)
     return status
 
 @app.route('/resetPassword',methods=['POST'])
@@ -52,66 +43,58 @@ def resetPass():
     data = request.json
     old = data['old_password']
     new = data['new_password']
-    phone=session['phone']
-    p=Person(phone)
+    p=Person()
     valid = p.change_password(old,new)
     return valid
 
 @app.route('/getDetails',methods=['GET'])
 def dets():
-    print(session)
     data=None
-    phone=session['phone']
-    dummy = Person(phone)
+    dummy = Person()
     type = dummy.type
     if (type==0):
-        c=Cashier(phone)
+        c=Cashier()
         data=c.get_details()
     if (type==1):
-        m=Manager(phone)
+        m=Manager()
         data=m.get_details()
     if (type==2):
-        a=Admin(phone)
+        a=Admin()
         data=a.admin_get_details()
     if (type==3):
-        cust=Customer(phone)
+        cust=Customer()
         data=cust.get_details()
     return data
         
 @app.route('/orderAnalytics',methods=['GET'])
 def analytics():
-    phone=session['phone']
-    m=Manager(phone)
+    m=Manager()
     data=m.view_analytics()
     return data
 
 @app.route('/getAllOrders',methods=['GET'])
 def orders():
-    phone=session['phone']
-    m=Manager(phone)
+    m=Manager()
     data=m.view_order()
     return data
 
 @app.route('/getCustomerOrders',methods=['GET'])
 def customer_orders():
-    phone=session['phone']
-    cust=Customer(phone)
+    cust=Customer()
     data = cust.getOrders()
     print(data)
     return (data)
 
 @app.route('/getCashierOrders',methods=['GET'])
 def cashier_orders():
-    phone=session['phone']
-    c=Cashier(phone)
+    c=Cashier()
     data = c.get_todays_order()
     print(data)
     return (data)
 
 @app.route('/getAllProducts',methods=['GET'])
 def get_all_products():
-    phone=session['phone']
-    c=Cashier(phone)
+    c=Cashier()
     data = c.get_all_products()
     return jsonify(data)
 
@@ -120,8 +103,7 @@ def checkValidCoupon():
     data=request.json
     print(data)
     coupon_name = data['coupon']
-    phone=session['phone']
-    c=Cashier(phone)
+    c=Cashier()
     validity = c.check_coupon(coupon_name)
     return validity
 
@@ -130,8 +112,7 @@ def checkValidCustomer():
     data=request.json
     print(data)
     cust_phone = data['phone']
-    phone=session['phone']
-    c=Cashier(phone)
+    c=Cashier()
     validity = c.check_customer(cust_phone)
     return validity
 
@@ -142,8 +123,7 @@ def register_customer():
     last_name = data['lastname']
     phone = int(data['phone'])
     email = data['email']
-    phone=session['phone']
-    c=Cashier(phone)
+    c=Cashier()
     validity = c.reg(first_name,last_name,email,phone)
     return validity
 
@@ -160,56 +140,48 @@ def create_new_order():
     card_no = data['cardnumber']
     expiry = data['cardexpiry']
     cvv = data['cardcvv']
-    phone=session['phone']
-    c=Cashier(phone)
+    c=Cashier()
     validity = c.create_order(amount,products,coupon_id,cust_id,payment_type,senders_upi,card_no,expiry,cvv)
     print(validity)
     return validity
 
 @app.route('/addCoupon',methods=['POST'])
 def add_new_coupon():
-    print(session)
     data = request.json
     coup_name = data['coupon_name']
     disc = data['discount']
     expiry = data['date']
-    phone=session['phone']
-    a=Admin(phone)
+    a=Admin()
     validity = a.add_coupon(coup_name,disc,expiry)
     return validity
 
 @app.route('/addProduct',methods=['POST'])
 def add_new_product():
-    print(session)
     data = request.json
     prod_name = data['name']
     prod_price = data['price']
     prod_qty = data['qty']
     prod_cat = data['category']
     prod_war = data['warranty']
-    phone=session['phone']
-    a=Admin(phone)
+    a=Admin()
     validity = a.add_product(prod_name,prod_price,prod_qty,prod_cat,prod_war)
     return validity
 
 @app.route('/getAllStores',methods=['GET'])
 def get_all_stores():
-    phone=session['phone']
-    a=Admin(phone)
+    a=Admin()
     data = a.get_all_stores()
     return data
 
 @app.route('/createWorker',methods=['POST'])
 def create_worker():
-    print(session)
     data = request.json
     fn = data['firstname']
     ln = data['lastname']
     phone_no = int(data['phone'])
     store = int(data['store_id'])
     type = int(data['type'])
-    phone=session['phone']
-    a=Admin(phone)
+    a=Admin()
     valid = a.create_new_worker(fn,ln,phone_no,store,type)
     return valid
 

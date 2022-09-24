@@ -3,10 +3,9 @@ from classes.connections import *
 import json
 
 class Person():
-  def __init__(self,phone,password):
+  def __init__(self,phone):
     self.phone = phone
-    self.password = password
-    id_query = f"SELECT USER_ID from USERS WHERE PHONE={(phone)} and PASS='{str(password)}';"
+    id_query = f"SELECT USER_ID from USERS WHERE PHONE={(phone)}';"
     # query = 'SELECT worker_id,branch from workers INNER JOIN store ON workers.store_id=store.store_id where phone='+ str(self.phone);
     id_result = execute_select_query(id_query);
     if (len(id_result)!=0):
@@ -19,7 +18,10 @@ class Person():
     if (len(login_result) == 0 ):
       return({'status':'FAIL'})
     else:
-      return({'status':'SUCCESS','type':login_result[0][0]})
+      type = login_result[0][0]
+      self.type = type
+      return({'status':'SUCCESS','type':type})
+    
 
   def change_password(self,old_pass,new_pass):
     if (old_pass==self.password):

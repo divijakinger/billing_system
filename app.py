@@ -18,7 +18,7 @@ def user_login():
     db.engine.execute("TRUNCATE TABLE SESSIONS;")
     data=request.json
     phone=data['phone']
-    execute_insert_query(f"INSERT INTO SESSIONS() VALUES {phone}")
+    execute_insert_query(f"INSERT INTO SESSIONS(phone) VALUES {phone}")
     password=data['password']
     p = Person()
     status=p.login(password)

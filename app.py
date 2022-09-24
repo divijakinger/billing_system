@@ -115,6 +115,7 @@ def checkValidCustomer():
     cust_phone = data['phone']
     c=Cashier()
     validity = c.check_customer(cust_phone)
+    print(validity)
     return validity
 
 @app.route('/regCustomer',methods=['POST'])

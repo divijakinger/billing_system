@@ -1,11 +1,16 @@
 import json
 from flask import jsonify
-from flask import Flask,request
+from flask import Flask,request,session
 from classes.worker import *
 from classes.connections import *
 from classes.people import *
+from flask_session import Session
+from flask_cors import CORS, cross_origin
 
-session ={}
+app.config["SESSION_PERMANENT"] = True
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+CORS(app)
 
 @app.route('/',methods=['GET'])
 def home():
@@ -38,6 +43,7 @@ def user_login():
         cust = Customer(phone)
         type=3
         session['type']=type
+    print(session)
     return status
 
 @app.route('/resetPassword',methods=['POST'])
@@ -160,6 +166,7 @@ def create_new_order():
 
 @app.route('/addCoupon',methods=['POST'])
 def add_new_coupon():
+    print(session)
     data = request.json
     coup_name = data['coupon_name']
     disc = data['discount']
@@ -171,6 +178,7 @@ def add_new_coupon():
 
 @app.route('/addProduct',methods=['POST'])
 def add_new_product():
+    print(session)
     data = request.json
     prod_name = data['name']
     prod_price = data['price']
@@ -191,6 +199,7 @@ def get_all_stores():
 
 @app.route('/createWorker',methods=['POST'])
 def create_worker():
+    print(session)
     data = request.json
     fn = data['firstname']
     ln = data['lastname']

@@ -110,7 +110,7 @@ class Cashier(Worker):
     users_query = f"Insert into USERS(user_type,phone,lastname,firstname,pass) VALUES (3,{phone},'{lastname}','{firstname}','{generated_pass}');"
     print(users_query)
     if (execute_insert_query(users_query)):
-      find_id = execute_select_query(f"SELECT UDER_ID from USERS WHERE PHONE={phone}")[0][0]
+      find_id = execute_select_query(f"SELECT USER_ID from USERS WHERE PHONE={phone}")[0][0]
       customer_query = f"INSERT INTO CUSTOMERS(CUST_ID,EMAIL,LOYALTY_PTS) VALUES ({find_id},'{email}',0);"
       print(customer_query)
       if (execute_insert_query(customer_query)):

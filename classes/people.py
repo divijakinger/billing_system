@@ -5,12 +5,13 @@ import json
 class Person():
   def __init__(self,phone):
     self.phone = phone
-    id_query = f"SELECT USER_ID from USERS WHERE PHONE={(phone)};"
+    id_query = f"SELECT USER_ID,USER_TYPE from USERS WHERE PHONE={(phone)};"
     # query = 'SELECT worker_id,branch from workers INNER JOIN store ON workers.store_id=store.store_id where phone='+ str(self.phone);
     id_result = execute_select_query(id_query);
     if (len(id_result)!=0):
       id = id_result[0][0]
       self.id = id
+      self.type = id_result[0][1]
 
   def login(self,password):
     login_query = f"SELECT USER_TYPE from USERS WHERE PHONE={(self.phone)} and PASS='{str(password)}';"

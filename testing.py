@@ -7,3 +7,4 @@ print(response.json())
 response = requests.get("https://mibillingsystem.herokuapp.com/getDetails")
 
 print(response.json())
+

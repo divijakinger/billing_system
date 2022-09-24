@@ -194,11 +194,11 @@ def create_worker():
     data = request.json
     fn = data['firstname']
     ln = data['lastname']
-    phone = int(data['phone'])
+    phone_no = int(data['phone'])
     store = int(data['store_id'])
     type = int(data['type'])
     phone=session['phone']
     a=Admin(phone)
-    valid = a.create_new_worker(fn,ln,phone,store,type)
+    valid = a.create_new_worker(fn,ln,phone_no,store,type)
     return valid
 

@@ -1,26 +1,18 @@
 import json
 from flask import jsonify
-from flask import Flask,request,session
+from flask import Flask,request
 from classes.worker import *
 from classes.connections import *
 from classes.people import *
-from flask_session import Session
-from flask_cors import CORS, cross_origin
 
-SECRET_KEY = "testing"
-SESSION_TYPE = 'filesystem'
-app.config.from_object(__name__)
-Session(app)
-CORS(app)
+session={}
 
 @app.route('/',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def home():
     print("WORKING")
     return {'message':'hello'}
 
 @app.route('/login',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def user_login():
     data=request.json
     phone=data['phone']
@@ -50,7 +42,6 @@ def user_login():
     return status
 
 @app.route('/resetPassword',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def resetPass():
     data = request.json
     old = data['old_password']
@@ -62,7 +53,6 @@ def resetPass():
     return valid
 
 @app.route('/getDetails',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def dets():
     data=None
     type=session['type']
@@ -83,7 +73,6 @@ def dets():
     return data
         
 @app.route('/orderAnalytics',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def analytics():
     phone=session['phone']
     password=session['password']
@@ -92,7 +81,6 @@ def analytics():
     return data
 
 @app.route('/getAllOrders',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def orders():
     phone=session['phone']
     password=session['password']
@@ -101,7 +89,6 @@ def orders():
     return data
 
 @app.route('/getCustomerOrders',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def customer_orders():
     phone=session['phone']
     password=session['password']
@@ -111,7 +98,6 @@ def customer_orders():
     return (data)
 
 @app.route('/getCashierOrders',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def cashier_orders():
     phone=session['phone']
     password=session['password']
@@ -121,7 +107,6 @@ def cashier_orders():
     return (data)
 
 @app.route('/getAllProducts',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def get_all_products():
     phone=session['phone']
     password=session['password']
@@ -130,7 +115,6 @@ def get_all_products():
     return jsonify(data)
 
 @app.route('/checkCoupon',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def checkValidCoupon():
     data=request.json
     print(data)
@@ -142,7 +126,6 @@ def checkValidCoupon():
     return validity
 
 @app.route('/checkCustomer',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def checkValidCustomer():
     data=request.json
     print(data)
@@ -154,7 +137,6 @@ def checkValidCustomer():
     return validity
 
 @app.route('/regCustomer',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def register_customer():
     data = request.json
     first_name = data['firstname']
@@ -168,7 +150,6 @@ def register_customer():
     return validity
 
 @app.route('/createOrder',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def create_new_order():
     data = request.json
     amount = data['amount']
@@ -189,7 +170,6 @@ def create_new_order():
     return validity
 
 @app.route('/addCoupon',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def add_new_coupon():
     data = request.json
     coup_name = data['coupon_name']
@@ -202,7 +182,6 @@ def add_new_coupon():
     return validity
 
 @app.route('/addProduct',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def add_new_product():
     data = request.json
     prod_name = data['name']
@@ -217,7 +196,6 @@ def add_new_product():
     return validity
 
 @app.route('/getAllStores',methods=['GET'])
-@cross_origin(supports_credentials=True)
 def get_all_stores():
     phone=session['phone']
     password=session['password']
@@ -226,7 +204,6 @@ def get_all_stores():
     return data
 
 @app.route('/createWorker',methods=['POST'])
-@cross_origin(supports_credentials=True)
 def create_worker():
     data = request.json
     fn = data['firstname']

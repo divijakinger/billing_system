@@ -8,7 +8,7 @@ from flask_session import Session
 from flask_cors import CORS, cross_origin
 import os
 
-app.secret_key = os.urandom(24)
+app.secret_key = 'testing'
 
 
 @app.route('/',methods=['GET'])

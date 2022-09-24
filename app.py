@@ -19,6 +19,7 @@ def user_login():
     data=request.json
     phone=data['phone']
     execute_insert_query(f"INSERT INTO SESSIONS(phone) VALUES {phone}")
+    print(f"INSERT INTO SESSIONS(phone) VALUES {phone}")
     password=data['password']
     p = Person()
     status=p.login(password)

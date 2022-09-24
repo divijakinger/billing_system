@@ -25,7 +25,7 @@ def user_login():
     data=request.json
     phone=data['phone']
     password=data['password']
-    session['phone']=phone
+    session["phone"]=phone
     p = Person(phone)
     status=p.login(password)
     if (status['status']=='FAIL'):
@@ -33,19 +33,16 @@ def user_login():
     elif (status['type']==0):
         c = Cashier(phone)
         type=0
-        session['type']=type
     elif (status['type']==1):
         m = Manager(phone)
         type=1
-        session['type']=type
     elif (status['type']==2):
         a = Admin(phone)
         type=2
-        session['type']=type
     elif (status['type']==3):
         cust = Customer(phone)
         type=3
-        session['type']=type
+    session["type"]=type
     print(session)
     return status
 
